@@ -1,8 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_orders_manager_front/domain/entities/product_entity.dart';
-import 'package:restaurant_orders_manager_front/domain/entities/request_entity.dart';
 import 'package:restaurant_orders_manager_front/insfraestructure/product_model.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/request_provider.dart';
 
@@ -11,8 +8,11 @@ import '../../../insfraestructure/request_model.dart';
 class Products extends StatefulWidget {
   final ProductModel productCategory;
   final int tableId;
-  const Products(
-      {super.key, required this.productCategory, required this.tableId});
+  const Products({
+    super.key,
+    required this.productCategory,
+    required this.tableId,
+  });
 
   @override
   State<Products> createState() => _ProductsState();
@@ -95,48 +95,22 @@ class _ProductsState extends State<Products> {
                 }
               }
 
-              RequestModel? requestModel =
-                  requestProvider.getRequestById(widget.tableId.toString());
-
-              if (requestModel != null) {
-                if (requestProvider.modifyRequest(
-                  widget.tableId,
-                  productsRequest,
-                )) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Pedido modificado'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Error al modificar el pedido'),
-                    ),
-                  );
-                }
-              } else {
-                RequestModel request = RequestModel(
-                  tableId: widget.tableId.toString(),
-                  id: widget.tableId.toString(),
-                  productsRequest: productsRequest,
+              if (requestProvider.modifyRequest(
+                widget.tableId,
+                productsRequest,
+              )) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Pedido modificado'),
+                    backgroundColor: Colors.green,
+                  ),
                 );
-
-                if (requestProvider.addRequest(request)) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Pedido añadido'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Error al añadir el pedido'),
-                    ),
-                  );
-                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error al modificar el pedido'),
+                  ),
+                );
               }
               Navigator.pop(context, productsRequest);
             },

@@ -46,14 +46,40 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () async {
-                  User user = await login.logIn(
+                onPressed: () {
+                  if (login.count >= 4) {
+                    Future.delayed(const Duration(seconds: 30)).then((value) {
+                      login.count = 0;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Muchos intentos, espere 30 segundos'),
+                      ),
+                    );
+                    return;
+                  }
+                  login
+                      .logIn(
                     user: emailController.text,
                     password: passwdController.text,
-                  );
-                  userProvider.setUser(user);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushNamed(context, '/waiter_dashboard');
+                  )
+                      .then((value) {
+                    if (value == null) {
+                      //esperar 1 minuto y resetear el contador
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Usuario o contraseña incorrectos'),
+                        ),
+                      );
+
+                      return;
+                    } else {
+                      userProvider.user = value;
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(context, '/waiter_dashboard');
+                    }
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50), // height

@@ -47,7 +47,8 @@ class _WaiterProductViewState extends State<WaiterProductView> {
                       ),
                       trailing: IconButton(
                         icon: const Icon(
-                            Icons.add), // Cambia esto al icono que quieras
+                          Icons.add,
+                        ), // Cambia esto al icono que quieras
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -64,10 +65,9 @@ class _WaiterProductViewState extends State<WaiterProductView> {
                     );
                   },
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: OrderView(
-                    request: null,
                     key: UniqueKey(),
                     tableId: widget.tableId,
                   ),
@@ -83,8 +83,7 @@ class _WaiterProductViewState extends State<WaiterProductView> {
 
 class OrderView extends StatefulWidget {
   final int tableId;
-  RequestModel? request;
-  OrderView({super.key, required this.tableId, required this.request});
+  const OrderView({super.key, required this.tableId});
 
   @override
   State<OrderView> createState() => _OrderViewState();
@@ -96,14 +95,14 @@ class _OrderViewState extends State<OrderView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       updateRequest();
     });
   }
 
   void updateRequest() {
     request = Provider.of<RequestProvider>(context, listen: false)
-        .getRequestById(widget.tableId.toString());
+        .getRequestById(widget.tableId);
     print(request?.productsRequest);
 
     setState(() {});
@@ -111,9 +110,11 @@ class _OrderViewState extends State<OrderView> {
 
   @override
   Widget build(BuildContext context) {
+    updateRequest();
+
     return Consumer<RequestProvider>(
       builder: (context, requestProvider, child) {
-        if (request == null) {
+        if (request != null && request!.productsRequest.isEmpty) {
           return const Text('No existen ordenes para esta mesa');
         } else {
           return Column(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_orders_manager_front/domain/entities/table_entity.dart';
 import 'package:restaurant_orders_manager_front/domain/entities/user_entity.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/product_provider.dart';
+import 'package:restaurant_orders_manager_front/presentation/providers/request_provider.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/table_provider.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/user_provider.dart';
 
@@ -90,23 +91,40 @@ class WaiterDashboard extends StatelessWidget {
                 ),
                 Consumer<TableProvider>(
                   builder: (context, tableProvider, child) {
-                    return Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: tableProvider.notAvaliableTableList.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: NotAvaliableTable(
-                              table: tableProvider.notAvaliableTableList[index],
-                              onPressed: () async {
-                                await tableProvider.emptyTable(
-                                  tableProvider.notAvaliableTableList[index].id,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                    return Consumer<RequestProvider>(
+                      builder: (context, requestProvider, child) {
+                        return Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount:
+                                tableProvider.notAvaliableTableList.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: NotAvaliableTable(
+                                  table: tableProvider
+                                      .notAvaliableTableList[index],
+                                  onPressed: () async {
+                                    print(
+                                      'index: ${tableProvider.notAvaliableTableList[index].id}',
+                                    );
+                                    requestProvider
+                                        .getRequestById(
+                                          tableProvider
+                                              .notAvaliableTableList[index].id,
+                                        )
+                                        ?.productsRequest
+                                        .clear();
+                                    await tableProvider.emptyTable(
+                                      tableProvider
+                                          .notAvaliableTableList[index].id,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -122,8 +140,11 @@ class WaiterDashboard extends StatelessWidget {
 class AvaliableTable extends StatelessWidget {
   final VoidCallback onPressed;
   final CustomerTable table;
-  const AvaliableTable(
-      {super.key, required this.table, required this.onPressed});
+  const AvaliableTable({
+    super.key,
+    required this.table,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +204,11 @@ class NotAvaliableTable extends StatelessWidget {
   final CustomerTable table;
   final VoidCallback onPressed;
 
-  const NotAvaliableTable(
-      {super.key, required this.table, required this.onPressed});
+  const NotAvaliableTable({
+    super.key,
+    required this.table,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +266,9 @@ class NotAvaliableTable extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => WaiterProductView(
-                            tableId: table.id, key: UniqueKey()),
+                          tableId: table.id,
+                          key: UniqueKey(),
+                        ),
                       ),
                     );
                   },

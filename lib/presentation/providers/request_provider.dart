@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_orders_manager_front/config/helpers/get_tables.dart';
 import 'package:restaurant_orders_manager_front/insfraestructure/request_model.dart';
 
 class RequestProvider extends ChangeNotifier {
+  final TableAnswer _tableAnswer = TableAnswer();
+  dynamic tables = [];
   List<RequestModel> requestList = [];
+
+  RequestProvider() {
+    _tableAnswer.getAllTables().then((value) {
+      tables = value;
+      tables.forEach((element) {
+        requestList.add(RequestModel(id: element.id, tableId: element.id));
+      });
+    });
+  }
 
   bool addRequest(RequestModel request) {
     try {
       requestList.add(request);
+      print(requestList);
       notifyListeners();
+      return true;
     } catch (e) {
       return false;
     }
-    return true;
   }
 
   bool removeRequest(RequestModel request) {
@@ -35,27 +48,23 @@ class RequestProvider extends ChangeNotifier {
 
   bool modifyRequest(int tableId, List<Map<String, dynamic>> productsRequest) {
     try {
-      requestList.forEach((element) {
+      for (var element in requestList) {
+        print('hola ${element.productsRequest} ${element.tableId == tableId}');
         if (element.tableId == tableId) {
           element.productsRequest.addAll(productsRequest);
-          print(element.productsRequest);
+          print('productsRequest: $productsRequest');
         }
-      });
+      }
       notifyListeners();
       return true;
     } catch (e) {
       print('error: $e');
       return false;
     }
-    return false;
   }
 
-  RequestModel? getRequestById(String id) {
-    try {
-      return requestList.firstWhere((element) => element.tableId == id);
-    } catch (e) {
-      return null;
-    }
+  RequestModel getRequestById(int id) {
+    return requestList.firstWhere((element) => element.tableId == id);
   }
 
   // final RequestRepository _requestRepository = RequestRepository();
