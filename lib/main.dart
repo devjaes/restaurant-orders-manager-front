@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_orders_manager_front/domain/entities/product_entity.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/user_provider.dart';
+import 'package:restaurant_orders_manager_front/presentation/screens/Waiter/waiter_products.dart';
+import 'package:restaurant_orders_manager_front/presentation/screens/Waiter/waiter_products_categories.dart';
 import 'package:restaurant_orders_manager_front/presentation/screens/login.dart';
 
+import 'presentation/providers/request_provider.dart';
 import 'presentation/screens/Waiter/waiter_dashboard.dart';
 
 Future main() async {
@@ -19,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => RequestProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +36,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/login',
         routes: {
           '/login': (context) => const LoginScreen(),
-          '/waiter_dashboard': (context) => WaiterDashboard(),
+          '/waiter_dashboard': (context) => const WaiterDashboard(),
         },
       ),
     );

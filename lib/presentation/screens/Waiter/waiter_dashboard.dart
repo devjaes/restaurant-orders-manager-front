@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_orders_manager_front/domain/entities/table_entity.dart';
 import 'package:restaurant_orders_manager_front/domain/entities/user_entity.dart';
+import 'package:restaurant_orders_manager_front/presentation/providers/product_provider.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/table_provider.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/user_provider.dart';
+
+import 'waiter_products_categories.dart';
 
 class WaiterDashboard extends StatelessWidget {
   const WaiterDashboard({super.key});
@@ -222,13 +225,35 @@ class NotAvaliableTable extends StatelessWidget {
               ),
             ),
             // Botón de acción
-            ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.orange, // Text Color (Foreground color)
-              ),
-              child: const Text('Desocupar mesa'),
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        Colors.orange, // Text Color (Foreground color)
+                  ),
+                  child: const Text('Desocupar mesa'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WaiterProductView(
+                            tableId: table.id, key: UniqueKey()),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        Colors.orange, // Text Color (Foreground color)
+                  ),
+                  child: const Text('Orden'),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_orders_manager_front/config/helpers/get_products.dart';
 import 'package:restaurant_orders_manager_front/domain/entities/product_entity.dart';
+import 'package:restaurant_orders_manager_front/insfraestructure/product_model.dart';
 
 class ProductProvider extends ChangeNotifier {
-  List<Product> tableList = [];
+  List<ProductModel> productList = [];
 
   ProductProvider() {
     getAllProducts();
@@ -11,7 +12,7 @@ class ProductProvider extends ChangeNotifier {
 
   getAllProducts() async {
     ProductAnswer productAnswer = ProductAnswer();
-    tableList = await productAnswer.getAllProducts();
+    productList = await productAnswer.getAllProducts();
     notifyListeners();
   }
 }
