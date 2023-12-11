@@ -4,7 +4,6 @@ import 'package:restaurant_orders_manager_front/config/helpers/get_login.dart';
 import 'package:restaurant_orders_manager_front/presentation/providers/user_provider.dart';
 
 import '../../domain/entities/user_entity.dart';
-import 'Waiter/waiter_dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -18,20 +17,19 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/login-background.png'),
-            fit: BoxFit.contain,
-          ),
-        ),
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const Image(
+              image: AssetImage('assets/images/login-background.png'),
+              height: 200,
+            ),
+            const SizedBox(height: 20),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(
-                labelText: 'Enter your email',
+                labelText: 'Enter your user',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,

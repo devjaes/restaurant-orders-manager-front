@@ -24,15 +24,15 @@ class TableModel {
   });
 
   factory TableModel.fromJson(Map<String, dynamic> json) => TableModel(
-        id: json["id"],
-        size: json["size"],
-        availability: json["availability"],
+        id: json['id'],
+        size: json['size'],
+        availability: json['availability'],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "size": size,
-        "availability": availability,
+        'id': id,
+        'size': size,
+        'availability': availability,
       };
 
   CustomerTable toEntity() {
