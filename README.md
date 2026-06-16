@@ -1,4 +1,4 @@
-# La Jefecita — Restaurant Ops Client (Flutter)
+# La Jefecita - Restaurant Ops Client (Flutter)
 
 > Flutter client for the La Jefecita restaurant ops platform: role-scoped flows for waitstaff, kitchen, and cashier, kept in sync with the backend through a real-time WebSocket layer.
 
@@ -57,4 +57,4 @@ Single-restaurant deployment.
 
 ## Related
 
-- Portfolio: <https://devjaes.dev/work/lajefecita> — highlight: **−30% order-entry errors**
+- Portfolio: <https://devjaes.dev/work/lajefecita> - highlight: **−30% order-entry errors**
